@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slide thuyết trình – Tư tưởng Hồ Chí Minh</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: #1e1e1e;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    #deck {
+      position: relative;
+      max-width: 1280px;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 48px 16px 48px 16px;
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      background: #fcf9f2;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 36px 44px;
+      background: #fcf9f2;
+      background-image: radial-gradient(circle at 10% 20%, rgba(235, 225, 210, 0.25) 0%, transparent 50%);
+      border-left: 8px solid #c0392b;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateX(100%) scale(0.95);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    .slide.exit-left {
+      transform: translateX(-100%) scale(0.95);
+      opacity: 0;
+    }
+    .slide.exit-right {
+      transform: translateX(100%) scale(0.95);
+      opacity: 0;
+    }
+    .slide.enter-from-left {
+      transform: translateX(-100%) scale(0.95);
+      opacity: 0;
+    }
+    .slide.enter-from-left.active {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+    .slide.enter-from-right {
+      transform: translateX(100%) scale(0.95);
+      opacity: 0;
+    }
+    .slide.enter-from-right.active {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    .slide-item {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide-item.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .slide-item.image-item {
+      transform: translateX(50px);
+    }
+    .slide-item.image-item.active {
+      transform: translateX(0);
+    }
+
+    .slide.exit-left .slide-item {
+      transform: translateX(-80px) !important;
+      opacity: 0 !important;
+    }
+    .slide.exit-left .slide-item.image-item {
+      transform: translateX(80px) !important;
+      opacity: 0 !important;
+    }
+    .slide.exit-right .slide-item {
+      transform: translateX(80px) !important;
+      opacity: 0 !important;
+    }
+    .slide.exit-right .slide-item.image-item {
+      transform: translateX(-80px) !important;
+      opacity: 0 !important;
+    }
+
+    .slide-number {
+      display: inline-block;
+      background: #c0392b;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 4px 18px;
+      border-radius: 40px;
+      letter-spacing: 0.8px;
+      margin-bottom: 14px;
+      align-self: flex-start;
+    }
+
+    h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #1e2a3a;
+      margin-bottom: 12px;
+      letter-spacing: -0.4px;
+      border-bottom: 4px solid #c0392b;
+      padding-bottom: 10px;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 16px 0 12px 0;
+      line-height: 1.3;
+    }
+
+    h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #a93226;
+      margin: 12px 0 8px 0;
+    }
+
+    p, li {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #2d2d2d;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 8px 0;
+    }
+
+    li {
+      padding: 4px 0 4px 28px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23c0392b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') left center no-repeat;
+      background-size: 18px;
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin: 12px 0;
+    }
+    .grid-3col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 22px;
+      margin: 12px 0;
+    }
+    .grid-4col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 18px;
+      margin: 12px 0;
+    }
+
+    .card-inset {
+      background: rgba(255, 255, 245, 0.6);
+      backdrop-filter: blur(2px);
+      padding: 18px 20px;
+      border-radius: 28px;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.02), 0 8px 20px -8px rgba(0,0,0,0.12);
+      border: 1px solid rgba(210, 190, 170, 0.3);
+    }
+
+    .highlight-box {
+      background: #eae2d4;
+      padding: 14px 22px;
+      border-radius: 32px 8px 32px 8px;
+      border-left: 8px solid #b03a2e;
+      margin: 12px 0;
+      font-size: 1rem;
+    }
+
+    .quote {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #1e2a3a;
+      background: #f0ebe1;
+      padding: 16px 30px;
+      border-radius: 60px 12px 60px 12px;
+      margin: 12px 0;
+      border: 1px solid #d6cbbc;
+      font-style: italic;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .badge {
+      background: #c0392b;
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: inline-block;
+    }
+
+    .image-placeholder {
+      background: #d9cdbb;
+      background-image: linear-gradient(145deg, #d9cdbb 0%, #c7b8a2 100%);
+      border-radius: 24px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: #3f3a32;
+      border: 1.5px dashed #8b7a66;
+      font-size: 0.95rem;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      margin: 10px 0;
+    }
+    .image-placeholder i {
+      font-style: normal;
+      background: rgba(255, 255, 240, 0.3);
+      padding: 6px 20px;
+      border-radius: 40px;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      border-top: 1px solid #d0c4b4;
+      padding-top: 14px;
+      font-size: 1rem;
+      color: #5b4f40;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-like {
+      background: transparent;
+      border: 1.5px solid #b03a2e;
+      color: #b03a2e;
+      padding: 6px 22px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: default;
+    }
+
+    .section-tag {
+      display: inline-block;
+      background: #2c3e50;
+      color: #fff;
+      padding: 2px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .nav-dots {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px 16px;
+      border-radius: 30px;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-dot:hover {
+      background: rgba(255, 255, 255, 0.7);
+      transform: scale(1.2);
+    }
+
+    .nav-dot.active {
+      background: #c0392b;
+      transform: scale(1.3);
+      box-shadow: 0 0 12px rgba(192, 57, 43, 0.5);
+    }
+
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(0, 0, 0, 0.7);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-arrow.prev { left: 16px; }
+    .nav-arrow.next { right: 16px; }
+
+    body.presentation-mode {
+      padding: 0;
+      margin: 0;
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+
+    body.presentation-mode #deck {
+      max-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      aspect-ratio: auto;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    body.presentation-mode .slide {
+      padding: 50px 70px;
+      border-left: none;
+      border-radius: 0;
+    }
+
+    .presentation-bar {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      background: rgba(30, 30, 30, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 60px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .presentation-bar .btn-present {
+      background: #c0392b;
+      color: #fff;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .presentation-bar .btn-present:hover {
+      background: #e74c3c;
+      transform: scale(1.03);
+      box-shadow: 0 4px 20px rgba(192, 57, 43, 0.4);
+    }
+
+    .presentation-bar .btn-present svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .presentation-bar .btn-options {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .presentation-bar .btn-options:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .presentation-bar .btn-options svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .presentation-bar .slide-counter {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0 8px;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    body.presentation-mode .presentation-bar {
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    body.presentation-mode .presentation-bar.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .presentation-trigger {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      z-index: 9998;
+      display: none;
+      pointer-events: none;
+    }
+
+    body.presentation-mode .presentation-trigger {
+      display: block;
+    }
+
+    body.presentation-mode::-webkit-scrollbar {
+      display: none;
+    }
+    body.presentation-mode {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 24px 20px !important; }
+      .presentation-bar {
+        padding: 8px 14px;
+        bottom: 20px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: 30px;
+      }
+      .presentation-bar .btn-present {
+        padding: 8px 18px;
+        font-size: 0.85rem;
+      }
+      .presentation-bar .slide-counter {
+        font-size: 0.75rem;
+        min-width: 40px;
+      }
+      .nav-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+      .nav-arrow.prev { left: 8px; }
+      .nav-arrow.next { right: 8px; }
+      .nav-dots { gap: 6px; padding: 6px 12px; bottom: 12px; }
+      .nav-dot { width: 10px; height: 10px; }
+      .grid-2col, .grid-3col, .grid-4col { grid-template-columns: 1fr; gap: 12px; }
+      h2 { font-size: 1.6rem; }
+      h3 { font-size: 1.1rem; }
+      p, li { font-size: 0.95rem; }
+      .quote { font-size: 1rem; padding: 14px 18px; }
+    }
+
+    @media print {
+      .presentation-bar, .nav-arrow, .nav-dots, .presentation-trigger {
+        display: none !important;
+      }
+      #deck {
+        overflow: visible !important;
+        aspect-ratio: auto !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        page-break-after: always;
+        height: 100vh;
+        border-left: 4px solid #c0392b;
+        z-index: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-trigger" id="presentationTrigger"></div>
+
+  <div class="presentation-bar" id="presentationBar">
+    <button class="btn-present" id="btnPresent">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <span>Thuyết trình</span>
+    </button>
+    <span class="slide-counter" id="slideCounter">1 / 26</span>
+    <button class="btn-options" id="btnFullscreen" title="Toàn màn hình">
+      <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+    </button>
+  </div>
+
+  <div id="deck">
+    <!-- SLIDE 1: Title -->
+    <section class="slide active" data-index="0">
+      <div style="display:flex;flex-direction:row;justify-content:space-between;align-items:center;height:100%;padding:20px 50px;gap:50px;">
+        <div style="flex:1.2;display:flex;flex-direction:column;justify-content:center;text-align:left;">
+          <h2 style="font-size:2.6rem;border-bottom:none;display:block;color:#c0392b;margin-bottom:8px;">TƯ TƯỞNG HỒ CHÍ MINH</h2>
+          <h3 style="font-size:1.8rem;color:#2c3e50;margin:0 0 8px 0;">Về vấn đề dân tộc và cách mạng giải phóng dân tộc</h3>
+          <p style="font-size:1.2rem;color:#555;margin:0 0 20px 0;">Ý nghĩa của tư tưởng đó với cách mạng Việt Nam</p>
+          <div><div style="padding:12px 30px;background:#c0392b;color:#fff;border-radius:40px;display:inline-block;"><span style="font-size:1.1rem;font-weight:600;">Nhóm 1</span></div></div>
+        </div>
+        <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+          <div style="width:100%;max-width:480px;height:340px;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.25);border:3px solid #c0392b;">
+            <img src="chu-tich-ho-chi-minh-doc-ban-tuyen-ngon-doc-lap-tai-quang-truong-ba-dinh-ngay-2-9-1945-anh-tu-lieu202433982.png" alt="Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:0.9rem;color:#555;text-align:center;padding:10px;\'>📷 Bác Hồ đọc Tuyên ngôn Độc lập 2/9/1945</div>';"/>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2.1: Bối cảnh lịch sử và yêu cầu của dân tộc -->
+    <section class="slide" data-index="1">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN I</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Cơ sở hình thành tư tưởng</h2>
+      <div class="quote slide-item" style="font-size:1.2rem;padding:14px 24px;transition-delay:0.2s;">Vì sao vấn đề dân tộc trở thành điểm xuất phát của tư tưởng Hồ Chí Minh?</div>
+      
+      <div style="display:flex;align-items:center;justify-content:center;height:60%;">
+        <div class="slide-item" style="transition-delay:0.25s;max-width:800px;width:100%;background:#f9f6f0;padding:30px 40px;border-radius:16px;border-left:6px solid #c0392b;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+          <h4 style="color:#c0392b;font-size:1.5rem;margin-bottom:16px;">1. Bối cảnh lịch sử và yêu cầu của dân tộc</h4>
+          <ul style="font-size:1.1rem;line-height:1.8;">
+            <li><strong>Bối cảnh:</strong> Cuối TK XIX – đầu TK XX, Việt Nam mất độc lập, nhân dân chịu ách thống trị của thực dân Pháp</li>
+            <li><strong>Khủng hoảng đường lối:</strong> Nhiều phong trào yêu nước diễn ra nhưng chưa tìm được con đường phù hợp</li>
+            <li><strong>Yêu cầu:</strong> Phải tìm con đường cứu nước mới, tập hợp lực lượng và giải quyết căn bản vấn đề độc lập</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2.1B: Hành trình tìm đường cứu nước -->
+    <section class="slide" data-index="2">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN I</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Hành trình tìm đường cứu nước</h2>
+      <div class="quote slide-item" style="font-size:1.1rem;padding:10px 20px;transition-delay:0.2s;font-style:italic;">"Tôi muốn đi ra ngoài xem nước Pháp và các nước khác... để tìm hiểu xem họ làm thế nào, rồi trở về giúp đồng bào"</div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-top:16px;padding:0 10px;">
+        <!-- 1858 -->
+        <div class="slide-item" style="transition-delay:0.25s;background:#eae2d4;padding:14px;border-radius:14px;text-align:center;border:2px solid #c0392b;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+          <img src="French_capture_of_Danang_1858.jpg" alt="Pháp xâm lược Đà Nẵng 1858" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;" onerror="this.style.display='none';">
+          <span class="badge" style="background:#c0392b;display:inline-block;padding:4px 16px;border-radius:20px;color:#fff;font-size:0.9rem;font-weight:700;">1858</span>
+          <p style="font-size:0.95rem;margin-top:6px;font-weight:600;color:#2c3e50;">Pháp xâm lược</p>
+          <p style="font-size:0.8rem;margin:0;color:#555;">Thực dân Pháp nổ súng xâm lược Việt Nam tại Đà Nẵng</p>
+        </div>
+        
+        <!-- 1911 -->
+        <div class="slide-item" style="transition-delay:0.35s;background:#eae2d4;padding:14px;border-radius:14px;text-align:center;border:2px solid #c0392b;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+          <img src="bh-copy-4.jpg" alt="Nguyễn Tất Thành ra đi tìm đường cứu nước" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;" onerror="this.style.display='none';">
+          <span class="badge" style="background:#c0392b;display:inline-block;padding:4px 16px;border-radius:20px;color:#fff;font-size:0.9rem;font-weight:700;">1911</span>
+          <p style="font-size:0.95rem;margin-top:6px;font-weight:600;color:#2c3e50;">Nguyễn Tất Thành ra đi</p>
+          <p style="font-size:0.8rem;margin:0;color:#555;">Trên tàu Amiral Latouche-Tréville, bắt đầu hành trình vĩ đại</p>
+        </div>
+        
+        <!-- 1920 -->
+        <div class="slide-item" style="transition-delay:0.45s;background:#eae2d4;padding:14px;border-radius:14px;text-align:center;border:2px solid #c0392b;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+          <img src="Luancuong_Lenin_A.jpg" alt="Tiếp cận Luận cương của Lenin" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;" onerror="this.style.display='none';">
+          <span class="badge" style="background:#c0392b;display:inline-block;padding:4px 16px;border-radius:20px;color:#fff;font-size:0.9rem;font-weight:700;">1920</span>
+          <p style="font-size:0.95rem;margin-top:6px;font-weight:600;color:#2c3e50;">Tiếp cận Luận cương</p>
+          <p style="font-size:0.8rem;margin:0;color:#555;">Đọc Sơ thảo Luận cương của Lênin về vấn đề dân tộc và thuộc địa</p>
+        </div>
+        
+        <!-- 1930 -->
+        <div class="slide-item" style="transition-delay:0.55s;background:#eae2d4;padding:14px;border-radius:14px;text-align:center;border:2px solid #c0392b;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+          <img src="Bác Hồ ĐH III.jpg" alt="Thành lập Đảng Cộng sản Việt Nam" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;" onerror="this.style.display='none';">
+          <span class="badge" style="background:#c0392b;display:inline-block;padding:4px 16px;border-radius:20px;color:#fff;font-size:0.9rem;font-weight:700;">1930</span>
+          <p style="font-size:0.95rem;margin-top:6px;font-weight:600;color:#2c3e50;">Thành lập Đảng</p>
+          <p style="font-size:0.8rem;margin:0;color:#555;">Đảng Cộng sản Việt Nam ra đời, mở ra bước ngoặt lịch sử</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Những cơ sở tư tưởng và thực tiễn (chi tiết) -->
+    <section class="slide" data-index="3">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN I</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Những cơ sở tư tưởng và thực tiễn</h2>
+      
+      <!-- Nội dung chữ - đẩy lên trên -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:8px;">
+        <div class="slide-item" style="transition-delay:0.25s;">
+          <ul>
+            <li><strong>Truyền thống dân tộc:</strong> lòng yêu nước, ý chí độc lập, tinh thần đoàn kết và khả năng vượt qua thử thách.</li>
+            <li><strong>Thực tiễn Việt Nam:</strong> những thất bại và hạn chế của các phong trào yêu nước đặt ra yêu cầu về một đường lối mới.</li>
+          </ul>
+        </div>
+        <div class="slide-item" style="transition-delay:0.35s;">
+          <ul>
+            <li><strong>Kinh nghiệm thế giới:</strong> quan sát các cuộc cách mạng và phong trào giải phóng dân tộc để tìm bài học phù hợp.</li>
+            <li><strong>Chủ nghĩa Mác – Lênin:</strong> cung cấp cơ sở lý luận để Hồ Chí Minh phân tích chủ nghĩa thực dân và xác định con đường giải phóng dân tộc.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Ảnh minh họa cho từng phần - DÃN TO HƠN -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:20px;flex:1;">
+        <div class="slide-item" style="transition-delay:0.4s;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.15);border:3px solid #c0392b;display:flex;flex-direction:column;">
+          <img src="SLIDE3.1.png" alt="Truyền thống dân tộc và Thực tiễn Việt Nam" style="width:100%;height:280px;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:280px;align-items:center;justify-content:center;font-size:1.1rem;color:#555;text-align:center;padding:10px;\'>📷 Truyền thống dân tộc<br>& Thực tiễn Việt Nam</div>';">
+          <div style="padding:14px 20px;background:#f5f0e8;text-align:center;font-weight:700;font-size:1.05rem;color:#2c3e50;border-top:2px solid #c0392b;">
+            Truyền thống dân tộc &amp; Thực tiễn Việt Nam
+          </div>
+        </div>
+        <div class="slide-item" style="transition-delay:0.5s;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.15);border:3px solid #c0392b;display:flex;flex-direction:column;">
+          <img src="SLIDE3.2.png" alt="Kinh nghiệm thế giới và Chủ nghĩa Mác - Lênin" style="width:100%;height:280px;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:280px;align-items:center;justify-content:center;font-size:1.1rem;color:#555;text-align:center;padding:10px;\'>📷 Kinh nghiệm thế giới<br>&amp; Chủ nghĩa Mác - Lênin</div>';">
+          <div style="padding:14px 20px;background:#f5f0e8;text-align:center;font-weight:700;font-size:1.05rem;color:#2c3e50;border-top:2px solid #c0392b;">
+            Kinh nghiệm thế giới &amp; Chủ nghĩa Mác - Lênin
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Quan điểm cốt lõi -->
+    <section class="slide" data-index="4">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Quan điểm cốt lõi về vấn đề dân tộc</h2>
+      <p class="slide-item" style="text-align:center;font-size:1.1rem;color:#555;margin-bottom:8px;transition-delay:0.2s;">Từ độc lập dân tộc đến tự do và hạnh phúc của nhân dân</p>
+      
+      <!-- Ảnh minh họa - TO ĐẸP -->
+      <div class="slide-item" style="transition-delay:0.3s;margin-top:10px;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.2);border:3px solid #c0392b;max-width:900px;margin-left:auto;margin-right:auto;">
+        <img src="SLIDE4.png" alt="Quan điểm cốt lõi về vấn đề dân tộc" style="width:100%;height:420px;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:420px;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Quan điểm cốt lõi<br>về vấn đề dân tộc</div>';">
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Độc lập tự do là quyền thiêng liêng -->
+    <section class="slide" data-index="5">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Độc lập, tự do là quyền thiêng liêng</h2>
+      
+      <!-- Quote + Ảnh xuất hiện cùng lúc -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:30px;margin:12px 0 16px 0;">
+        <div class="quote slide-item" style="font-size:1.4rem;padding:14px 24px;transition-delay:0.2s;flex:1;text-align:center;background:#f5f0e8;border-radius:12px;border-left:5px solid #c0392b;font-weight:600;color:#2c3e50;">
+          “Không có gì quý hơn độc lập, tự do.”
+        </div>
+        <div class="slide-item" style="transition-delay:0.2s;flex-shrink:0;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.15);border:3px solid #c0392b;">
+          <img src="SLIDE5.png" alt="Hồ Chí Minh - Không có gì quý hơn độc lập tự do" style="width:276px;height:166px;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:276px;height:166px;align-items:center;justify-content:center;font-size:0.9rem;color:#555;text-align:center;padding:10px;\'>📷 Bác Hồ<br>khẳng định<br>độc lập tự do</div>';">
+        </div>
+      </div>
+      
+      <!-- Nội dung danh sách -->
+      <ul class="slide-item" style="transition-delay:0.3s;font-size:1.05rem;line-height:1.8;max-width:900px;margin:0 auto;">
+        <li><strong>Quyền dân tộc:</strong> mỗi dân tộc có quyền sống độc lập, tự do và tự quyết định tương lai của mình.</li>
+        <li><strong>Độc lập thực sự:</strong> không chỉ thay đổi danh nghĩa mà phải chấm dứt sự áp đặt và bảo đảm quyền tự quyết.</li>
+        <li><strong>Ý nghĩa:</strong> độc lập là điều kiện để nhân dân làm chủ vận mệnh đất nước.</li>
+      </ul>
+    </section>
+
+    <!-- SLIDE 6: Độc lập gắn với tự do và hạnh phúc -->
+    <section class="slide" data-index="6">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Độc lập phải gắn với tự do và hạnh phúc</h2>
+      
+      <!-- 3 cột ĐỘC LẬP - TỰ DO - HẠNH PHÚC -->
+      <div class="grid-3col slide-item" style="transition-delay:0.2s;margin:12px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
+        
+        <!-- ĐỘC LẬP -->
+        <div style="background:#eae2d4;padding:16px;border-radius:16px;text-align:center;border:2px solid #c0392b;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+          <img src="SLIDE6.1.png" alt="Độc lập" style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;" onerror="this.style.display='none';">
+          <h4 style="color:#c0392b;margin:4px 0 6px 0;font-size:1.3rem;">ĐỘC LẬP</h4>
+          <p style="font-size:0.95rem;margin:0;color:#2c3e50;">Giành và giữ quyền tự quyết</p>
+        </div>
+        
+        <!-- TỰ DO -->
+        <div style="background:#eae2d4;padding:16px;border-radius:16px;text-align:center;border:2px solid #c0392b;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+          <img src="SLIDE6.2.png" alt="Tự do" style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;" onerror="this.style.display='none';">
+          <h4 style="color:#c0392b;margin:4px 0 6px 0;font-size:1.3rem;">TỰ DO</h4>
+          <p style="font-size:0.95rem;margin:0;color:#2c3e50;">Nhân dân được làm chủ</p>
+        </div>
+        
+        <!-- HẠNH PHÚC -->
+        <div style="background:#eae2d4;padding:16px;border-radius:16px;text-align:center;border:2px solid #c0392b;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+          <img src="SLIDE6.3.png" alt="Hạnh phúc" style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;" onerror="this.style.display='none';">
+          <h4 style="color:#c0392b;margin:4px 0 6px 0;font-size:1.3rem;">HẠNH PHÚC</h4>
+          <p style="font-size:0.95rem;margin:0;color:#2c3e50;">Cuộc sống ấm no, an toàn, phát triển</p>
+        </div>
+        
+      </div>
+      
+      <!-- Câu kết luận -->
+      <p class="slide-item" style="transition-delay:0.3s;font-weight:500;text-align:center;font-size:1.05rem;color:#2c3e50;background:#f5f0e8;padding:12px 20px;border-radius:12px;border-left:5px solid #c0392b;max-width:800px;margin:8px auto 0 auto;">
+        Ý nghĩa của độc lập được đo bằng khả năng đem lại quyền làm chủ và cuộc sống tốt đẹp cho nhân dân.
+      </p>
+    </section>
+
+    <!-- SLIDE 7.1: Giành độc lập là bước đầu -->
+    <section class="slide" data-index="7">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Độc lập dân tộc gắn với chủ nghĩa xã hội</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:10px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 10px 0;">
+            "Giành độc lập là bước đầu"
+          </p>
+          <p style="font-size:1.1rem;color:#2c3e50;line-height:1.6;margin:0;">
+            Sau khi thoát khỏi ách thống trị, đất nước phải tiếp tục xây dựng một xã hội mới.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.2;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;height:320px;">
+          <img src="SLIDE7.1.png" alt="Giành độc lập là bước đầu" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:320px;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Giành độc lập là bước đầu<br>Xây dựng xã hội mới</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 7.2: Mục tiêu hướng tới -->
+    <section class="slide" data-index="8">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Độc lập dân tộc gắn với chủ nghĩa xã hội</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:10px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.2;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;height:320px;">
+          <img src="SLIDE7.2.png" alt="Mục tiêu hướng tới" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:320px;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Mục tiêu hướng tới<br>Nhân dân làm chủ</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 10px 0;">
+            "Mục tiêu hướng tới"
+          </p>
+          <p style="font-size:1.1rem;color:#2c3e50;line-height:1.6;margin:0;">
+            Nhân dân làm chủ, có điều kiện phát triển và hưởng thành quả của đất nước.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 7.3: Tính thống nhất -->
+    <section class="slide" data-index="9">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Độc lập dân tộc gắn với chủ nghĩa xã hội</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:10px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 10px 0;">
+            "Tính thống nhất"
+          </p>
+          <p style="font-size:1.1rem;color:#2c3e50;line-height:1.6;margin:0;">
+            Giải phóng dân tộc gắn với giải phóng con người và xây dựng xã hội theo định hướng xã hội chủ nghĩa.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.2;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;height:320px;">
+          <img src="SLIDE7.3.png" alt="Tính thống nhất" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:320px;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Tính thống nhất<br>Giải phóng dân tộc gắn với giải phóng con người</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 8.1: Không tách dân tộc khỏi nhân dân -->
+    <section class="slide" data-index="10">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">4. Điểm khác biệt trong cách nhìn về vấn đề dân tộc</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:10px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Không tách dân tộc khỏi nhân dân"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Độc lập không phải mục tiêu chỉ dành cho nhà nước, mà phải trở thành quyền sống và quyền làm chủ của nhân dân.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.2;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;height:320px;">
+          <img src="SLIDE8.1.png" alt="Không tách dân tộc khỏi nhân dân" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:320px;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Không tách dân tộc khỏi nhân dân<br>Quyền sống và quyền làm chủ</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 8.2: Không dừng ở giành chính quyền -->
+    <section class="slide" data-index="11">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">4. Điểm khác biệt trong cách nhìn về vấn đề dân tộc</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:10px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.2;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;height:320px;">
+          <img src="SLIDE8.2.png" alt="Không dừng ở giành chính quyền" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:320px;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Không dừng ở giành chính quyền<br>Xây dựng và bảo vệ thành quả cách mạng</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Không dừng ở giành chính quyền"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Sau độc lập phải xây dựng và bảo vệ thành quả cách mạng.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 8.3: Từ dân tộc đến con người -->
+    <section class="slide" data-index="12">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN II</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">4. Điểm khác biệt trong cách nhìn về vấn đề dân tộc</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:10px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Từ dân tộc đến con người"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0 0 12px 0;">
+            Giải phóng dân tộc hướng tới giải phóng con người và tạo điều kiện cho con người phát triển.
+          </p>
+          <!-- Trích dẫn thêm -->
+          <div style="background:#c0392b;color:#fff;padding:10px 16px;border-radius:8px;font-size:0.95rem;font-style:italic;text-align:center;">
+            "Nghị quyết 80-NQ/TW: Xây dựng con người Việt Nam là 'chìa khóa' cho kỷ nguyên vươn mình"
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.2;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;height:320px;">
+          <img src="SLIDE8.3.png" alt="Từ dân tộc đến con người" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:320px;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Từ dân tộc đến con người<br>Giải phóng con người, con người phát triển</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Con đường và lực lượng -->
+    <section class="slide" data-index="13">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Con đường và lực lượng của cách mạng</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:35px;flex:1;margin-top:10px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:0.9;display:flex;flex-direction:column;justify-content:center;">
+          <p style="font-size:1.15rem;color:#2c3e50;line-height:1.7;margin:0 0 16px 0;font-weight:500;">
+            Giải phóng dân tộc cần con đường đúng, lực lượng rộng và tổ chức lãnh đạo phù hợp
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:#f5f0e8;padding:14px 20px;border-radius:10px;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;">➤ Con đường đúng</span>
+              <p style="margin:4px 0 0 0;font-size:0.95rem;color:#555;">Cách mạng vô sản, kết hợp giải phóng dân tộc với giải phóng giai cấp</p>
+            </div>
+            <div style="background:#f5f0e8;padding:14px 20px;border-radius:10px;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;">➤ Lực lượng rộng</span>
+              <p style="margin:4px 0 0 0;font-size:0.95rem;color:#555;">Đoàn kết toàn dân, lấy công nông làm nòng cốt</p>
+            </div>
+            <div style="background:#f5f0e8;padding:14px 20px;border-radius:10px;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;">➤ Tổ chức lãnh đạo</span>
+              <p style="margin:4px 0 0 0;font-size:0.95rem;color:#555;">Đảng Cộng sản là nhân tố quyết định thắng lợi</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa - TO THEO TỈ LỆ 310:162 -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.3;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:310/162;max-height:420px;">
+          <img src="SLIDE9.png" alt="Con đường và lực lượng của cách mạng" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Con đường và lực lượng<br>của cách mạng</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 10.1: Nhận thức từ thực tiễn -->
+    <section class="slide" data-index="14">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Lựa chọn con đường cách mạng vô sản</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Nhận thức từ thực tiễn"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Các khuynh hướng cứu nước trước đó chưa giải quyết được căn bản vấn đề độc lập.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE10.1.png" alt="Nhận thức từ thực tiễn" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Nhận thức từ thực tiễn</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 10.2: Bước ngoặt 1920 -->
+    <section class="slide" data-index="15">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Lựa chọn con đường cách mạng vô sản</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE10.2.png" alt="Bước ngoặt 1920" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Bước ngoặt 1920</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Bước ngoặt 1920"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Nguyễn Ái Quốc tiếp cận Luận cương của Lênin về vấn đề dân tộc và thuộc địa.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 10.3: Kết luận chiến lược -->
+    <section class="slide" data-index="16">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Lựa chọn con đường cách mạng vô sản</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Kết luận chiến lược"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Xác định cách mạng vô sản là con đường phù hợp để giải phóng dân tộc Việt Nam.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE10.3.png" alt="Kết luận chiến lược" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Kết luận chiến lược</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 10.4: Ý nghĩa -->
+    <section class="slide" data-index="17">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Lựa chọn con đường cách mạng vô sản</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE10.4.png" alt="Ý nghĩa" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Ý nghĩa</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Ý nghĩa"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Đường lối cứu nước chuyển từ tìm kiếm mô hình sang xác định một hướng đi có cơ sở lý luận rõ ràng.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 11.1: Lực lượng nền tảng -->
+    <section class="slide" data-index="18">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Cách mạng là sự nghiệp của toàn dân</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Lực lượng nền tảng"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Công nhân và nông dân.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE11.1.png" alt="Lực lượng nền tảng" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Lực lượng nền tảng<br>Công nhân và nông dân</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 11.2: Mở rộng lực lượng -->
+    <section class="slide" data-index="19">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Cách mạng là sự nghiệp của toàn dân</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE11.2.png" alt="Mở rộng lực lượng" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Mở rộng lực lượng<br>Trí thức, tiểu tư sản và các lực lượng yêu nước</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Mở rộng lực lượng"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Tập hợp trí thức, tiểu tư sản và các lực lượng yêu nước khác.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 11.3: Nguyên tắc -->
+    <section class="slide" data-index="20">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Cách mạng là sự nghiệp của toàn dân</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Nguyên tắc"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Không chia rẽ những người có chung mục tiêu độc lập.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE11.3.png" alt="Nguyên tắc" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Nguyên tắc<br>Không chia rẽ mục tiêu độc lập</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 11.4: Sức mạnh then chốt -->
+    <section class="slide" data-index="21">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Cách mạng là sự nghiệp của toàn dân</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE11.4.png" alt="Sức mạnh then chốt" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Sức mạnh then chốt<br>Đại đoàn kết toàn dân tộc</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Sức mạnh then chốt"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Đại đoàn kết toàn dân tộc biến mục tiêu cách mạng thành sức mạnh xã hội rộng lớn.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 12: Vai trò của tổ chức lãnh đạo -->
+    <section class="slide" data-index="22">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Vai trò của tổ chức lãnh đạo</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;">
+          <!-- Sơ đồ công thức -->
+          <div style="background:#eae2d4;padding:16px 20px;border-radius:16px;margin:0 0 14px 0;text-align:center;border:2px solid #c0392b;">
+            <p style="font-weight:600;font-size:0.95rem;margin:4px 0;">ĐƯỜNG LỐI ĐÚNG + TỔ CHỨC LÃNH ĐẠO</p>
+            <p style="font-weight:600;font-size:0.95rem;margin:4px 0;">+ NHÂN DÂN LÀ CHỦ THỂ + ĐOÀN KẾT</p>
+            <p style="font-weight:700;color:#c0392b;font-size:1.2rem;margin:6px 0 0 0;">= SỨC MẠNH CÁCH MẠNG</p>
+          </div>
+          
+          <!-- Nội dung -->
+          <div style="background:#f9f6f0;padding:20px 24px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+            <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+              <strong>Yêu cầu đối với Đảng:</strong> gắn bó với nhân dân, có đường lối phù hợp và đặt lợi ích dân tộc, nhân dân lên hàng đầu.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide12.png" alt="Vai trò của tổ chức lãnh đạo" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Vai trò của tổ chức lãnh đạo</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 13.1: Tư tưởng cốt lõi -->
+    <section class="slide" data-index="23">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">4. Đại đoàn kết là phương thức tập hợp sức mạnh</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Tư tưởng cốt lõi"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Mọi lực lượng yêu nước đều có thể đóng góp vào sự nghiệp chung.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE13.1.png" alt="Tư tưởng cốt lõi" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Tư tưởng cốt lõi<br>Mọi lực lượng yêu nước</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 13.2: Điều kiện thành công -->
+    <section class="slide" data-index="24">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">4. Đại đoàn kết là phương thức tập hợp sức mạnh</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE13.2.png" alt="Điều kiện thành công" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Điều kiện thành công<br>Tập hợp, tổ chức và phát huy lợi ích chung</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Điều kiện thành công"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Biết tập hợp, tổ chức và phát huy lợi ích chung thay vì để khác biệt làm suy yếu lực lượng.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 13.3: Dẫn chứng lịch sử -->
+    <section class="slide" data-index="25">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN III</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">4. Đại đoàn kết là phương thức tập hợp sức mạnh</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Dẫn chứng lịch sử"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Khối quần chúng rộng lớn tham gia Cách mạng Tháng Tám cho thấy sức mạnh của việc huy động toàn dân.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE13.3.png" alt="Dẫn chứng lịch sử" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Dẫn chứng lịch sử<br>Cách mạng Tháng Tám</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 14: Phương pháp và sức mạnh cách mạng -->
+    <section class="slide" data-index="26">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Phương pháp và sức mạnh cách mạng</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;">
+          <div style="background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+            <p style="font-size:1.15rem;color:#2c3e50;line-height:1.7;margin:0;">
+              Chủ động, tự lực, linh hoạt và kết hợp sức mạnh dân tộc với sức mạnh thời đại.
+            </p>
+          </div>
+          
+          <!-- Các điểm nhấn -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.2rem;">⚡</span>
+              <p style="margin:4px 0 0 0;font-size:0.9rem;font-weight:600;color:#2c3e50;">Chủ động</p>
+            </div>
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.2rem;">💪</span>
+              <p style="margin:4px 0 0 0;font-size:0.9rem;font-weight:600;color:#2c3e50;">Tự lực</p>
+            </div>
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.2rem;">🔀</span>
+              <p style="margin:4px 0 0 0;font-size:0.9rem;font-weight:600;color:#2c3e50;">Linh hoạt</p>
+            </div>
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.2rem;">🌍</span>
+              <p style="margin:4px 0 0 0;font-size:0.9rem;font-weight:600;color:#2c3e50;">Kết hợp sức mạnh</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide14.png" alt="Phương pháp và sức mạnh cách mạng" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Phương pháp và sức mạnh cách mạng</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 15.1: Chủ động -->
+    <section class="slide" data-index="27">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Cách mạng thuộc địa phải chủ động, sáng tạo</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Chủ động"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Dân tộc thuộc địa không chỉ chờ biến động ở bên ngoài mà phải tự tổ chức và tự đứng lên đấu tranh.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE15.1.png" alt="Chủ động" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Chủ động<br>Tự tổ chức và tự đứng lên đấu tranh</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 15.2: Sáng tạo -->
+    <section class="slide" data-index="28">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Cách mạng thuộc địa phải chủ động, sáng tạo</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE15.2.png" alt="Sáng tạo" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Sáng tạo<br>Vận dụng lý luận phù hợp với hoàn cảnh Việt Nam</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Sáng tạo"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Lý luận phải được vận dụng phù hợp với hoàn cảnh cụ thể của Việt Nam.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 15.3: Tính thực tiễn -->
+    <section class="slide" data-index="29">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Cách mạng thuộc địa phải chủ động, sáng tạo</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Tính thực tiễn"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Đánh giá đúng tương quan lực lượng và thời cơ để lựa chọn cách làm phù hợp từng giai đoạn.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE15.3.png" alt="Tính thực tiễn" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Tính thực tiễn<br>Đánh giá tương quan lực lượng và thời cơ</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 16.1: Nội lực là quyết định -->
+    <section class="slide" data-index="30">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Tự lực, tự cường và tranh thủ sức mạnh quốc tế</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Nội lực là quyết định"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Phải dựa vào nhân dân, tinh thần tự chủ và khả năng tự tổ chức của dân tộc.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE16.1.png" alt="Nội lực là quyết định" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Nội lực là quyết định<br>Dựa vào nhân dân, tinh thần tự chủ</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 16.2: Ngoại lực là quan trọng -->
+    <section class="slide" data-index="31">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Tự lực, tự cường và tranh thủ sức mạnh quốc tế</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE16.2.png" alt="Ngoại lực là quan trọng" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Ngoại lực là quan trọng<br>Tranh thủ sự đồng tình, ủng hộ quốc tế</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Ngoại lực là quan trọng"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Tranh thủ sự đồng tình, ủng hộ và hợp tác của các lực lượng tiến bộ trên thế giới.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 16.3: Nguyên tắc cân bằng -->
+    <section class="slide" data-index="32">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Tự lực, tự cường và tranh thủ sức mạnh quốc tế</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Nguyên tắc cân bằng"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Không lệ thuộc bên ngoài nhưng cũng không tự cô lập.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE16.3.png" alt="Nguyên tắc cân bằng" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Nguyên tắc cân bằng<br>Không lệ thuộc, không tự cô lập</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 17.1: Phát huy quần chúng -->
+    <section class="slide" data-index="33">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Phương pháp cách mạng: linh hoạt theo từng giai đoạn</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Phát huy quần chúng"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Lấy sức mạnh của nhân dân làm nền tảng.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE17.1.png" alt="Phát huy quần chúng" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Phát huy quần chúng<br>Sức mạnh của nhân dân</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 17.2: Kết hợp nhiều hình thức -->
+    <section class="slide" data-index="34">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Phương pháp cách mạng: linh hoạt theo từng giai đoạn</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE17.2.png" alt="Kết hợp nhiều hình thức" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Kết hợp nhiều hình thức<br>Đấu tranh chính trị, vận động quần chúng</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Kết hợp nhiều hình thức"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Đấu tranh chính trị, vận động quần chúng và các hình thức phù hợp với hoàn cảnh.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 17.3: Kết hợp chính trị và vũ trang -->
+    <section class="slide" data-index="35">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Phương pháp cách mạng: linh hoạt theo từng giai đoạn</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Kết hợp chính trị và vũ trang"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Sử dụng phù hợp với yêu cầu và điều kiện lịch sử.
+          </p>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE17.3.png" alt="Kết hợp chính trị và vũ trang" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Kết hợp chính trị và vũ trang<br>Phù hợp với yêu cầu và điều kiện lịch sử</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 17.4: Nắm bắt thời cơ -->
+    <section class="slide" data-index="36">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN IV</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Phương pháp cách mạng: linh hoạt theo từng giai đoạn</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="SLIDE17.4.png" alt="Nắm bắt thời cơ" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Nắm bắt thời cơ<br>Hành động nhanh, quyết đoán, tổ chức tốt</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <p style="font-size:1.4rem;font-weight:700;color:#c0392b;margin:0 0 12px 0;">
+            "Nắm bắt thời cơ"
+          </p>
+          <p style="font-size:1.05rem;color:#2c3e50;line-height:1.7;margin:0;">
+            Khi điều kiện chín muồi phải hành động nhanh, quyết đoán và tổ chức tốt.
+          </p>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 18: Thực tiễn và giá trị -->
+    <section class="slide" data-index="37">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN V</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Thực tiễn và giá trị đối với cách mạng Việt Nam</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;">
+          <div style="background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+            <p style="font-size:1.15rem;color:#2c3e50;line-height:1.7;margin:0;">
+              Dùng các mốc lịch sử để chứng minh cách tư tưởng được vận dụng trong thực tiễn.
+            </p>
+          </div>
+          
+          <!-- Các mốc lịch sử -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.1rem;">1945</span>
+              <p style="margin:4px 0 0 0;font-size:0.85rem;font-weight:600;color:#2c3e50;">Cách mạng Tháng Tám</p>
+            </div>
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.1rem;">1954</span>
+              <p style="margin:4px 0 0 0;font-size:0.85rem;font-weight:600;color:#2c3e50;">Chiến thắng Điện Biên Phủ</p>
+            </div>
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.1rem;">1975</span>
+              <p style="margin:4px 0 0 0;font-size:0.85rem;font-weight:600;color:#2c3e50;">Đại thắng mùa Xuân</p>
+            </div>
+            <div style="background:#eae2d4;padding:12px 16px;border-radius:10px;text-align:center;border-left:4px solid #c0392b;">
+              <span style="font-weight:700;color:#c0392b;font-size:1.1rem;">1986</span>
+              <p style="margin:4px 0 0 0;font-size:0.85rem;font-weight:600;color:#2c3e50;">Công cuộc Đổi mới</p>
+            </div>
+          </div>
+          
+          <!-- Kết luận -->
+          <div style="background:#c0392b;color:#fff;padding:10px 16px;border-radius:8px;text-align:center;font-weight:600;font-size:0.95rem;margin-top:12px;">
+            "Tư tưởng soi đường cho sự nghiệp cách mạng Việt Nam"
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide18.png" alt="Thực tiễn và giá trị đối với cách mạng Việt Nam" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Thực tiễn và giá trị<br>Cách mạng Việt Nam</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 19: Cách mạng Tháng Tám -->
+    <section class="slide" data-index="38">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN V</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">1. Cách mạng Tháng Tám 1945: hội tụ nhiều luận điểm</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <ul style="font-size:1.05rem;color:#2c3e50;line-height:1.8;margin:0;padding-left:20px;">
+            <li><strong>Mục tiêu:</strong> độc lập dân tộc trở thành nhiệm vụ cấp thiết.</li>
+            <li><strong>Lực lượng:</strong> phát huy sức mạnh quần chúng và tinh thần đoàn kết.</li>
+            <li><strong>Thời cơ:</strong> chủ động nắm bắt thời điểm lịch sử để giành chính quyền.</li>
+            <li><strong>Kết quả:</strong> ngày 2/9/1945, Tuyên ngôn Độc lập được đọc tại Ba Đình, khai sinh nước Việt Nam Dân chủ Cộng hòa.</li>
+          </ul>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide19.png" alt="Cách mạng Tháng Tám 1945" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Cách mạng Tháng Tám 1945</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 20: Điện Biên Phủ -->
+    <section class="slide" data-index="39">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN V</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">2. Điện Biên Phủ 1954: sức mạnh của toàn dân và ý chí độc lập</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide20.png" alt="Chiến thắng Điện Biên Phủ 1954" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Chiến thắng Điện Biên Phủ 1954</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <ul style="font-size:1.05rem;color:#2c3e50;line-height:1.8;margin:0;padding-left:20px;">
+            <li><strong>Toàn dân:</strong> kháng chiến dựa trên sự tham gia và đóng góp của nhiều tầng lớp nhân dân.</li>
+            <li><strong>Tự lực:</strong> phát huy khả năng tổ chức, bảo đảm hậu cần và ý chí vượt qua khó khăn.</li>
+            <li><strong>Sức mạnh thời đại:</strong> kết hợp sức mạnh trong nước với sự ủng hộ quốc tế.</li>
+            <li><strong>Ý nghĩa:</strong> chiến thắng Điện Biên Phủ góp phần kết thúc chiến tranh Đông Dương của Pháp và tạo bước ngoặt lớn cho cách mạng Việt Nam.</li>
+          </ul>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 21.1: Đại thắng mùa Xuân 1975 -->
+    <section class="slide" data-index="40">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN V</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">3. Đại thắng mùa Xuân 1975: thống nhất đất nước</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <ul style="font-size:1.05rem;color:#2c3e50;line-height:1.8;margin:0;padding-left:20px;">
+            <li><strong>Chiến dịch Hồ Chí Minh:</strong> đỉnh cao của cuộc kháng chiến chống Mỹ cứu nước.</li>
+            <li><strong>Tầm vóc lịch sử:</strong> giải phóng hoàn toàn miền Nam, thống nhất đất nước.</li>
+            <li><strong>Bài học:</strong> sức mạnh của ý chí độc lập và tinh thần đoàn kết toàn dân.</li>
+            <li><strong>Kết quả:</strong> non sông liền một dải, mở ra kỷ nguyên hòa bình, độc lập, thống nhất.</li>
+          </ul>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide21.1.png" alt="Đại thắng mùa Xuân 1975" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Đại thắng mùa Xuân 1975</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 21.2: Công cuộc Đổi mới 1986 -->
+    <section class="slide" data-index="41">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN V</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">4. Công cuộc Đổi mới 1986: vận dụng sáng tạo</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide21.2.png" alt="Công cuộc Đổi mới 1986" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Công cuộc Đổi mới 1986</div>';">
+        </div>
+        
+        <!-- Cột phải: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1;background:#f9f6f0;padding:24px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <ul style="font-size:1.05rem;color:#2c3e50;line-height:1.8;margin:0;padding-left:20px;">
+            <li><strong>Nền tảng tư tưởng:</strong> kiên định độc lập dân tộc và định hướng xã hội chủ nghĩa.</li>
+            <li><strong>Tự lực, tự cường:</strong> nâng cao năng lực kinh tế, khoa học – công nghệ và nguồn nhân lực.</li>
+            <li><strong>Hội nhập:</strong> chủ động hợp tác quốc tế nhưng giữ vững lợi ích, bản lĩnh và bản sắc dân tộc.</li>
+            <li><strong>Thành tựu:</strong> đưa Việt Nam từ nước nghèo trở thành quốc gia đang phát triển có thu nhập trung bình.</li>
+          </ul>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 22: Giá trị trong giai đoạn hiện nay và Liên hệ sinh viên -->
+    <section class="slide" data-index="42">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">PHẦN V</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">5. Giá trị hiện nay và liên hệ sinh viên</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:8px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1;">
+          <!-- Giá trị giai đoạn hiện nay -->
+          <div style="background:#f9f6f0;padding:16px 20px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:10px;">
+            <p style="font-weight:700;color:#c0392b;margin:0 0 6px 0;font-size:1rem;">Giá trị giai đoạn hiện nay</p>
+            <ul style="font-size:0.95rem;color:#2c3e50;line-height:1.7;margin:0;padding-left:18px;">
+              <li><strong>Độc lập, chủ quyền:</strong> kiên định bảo vệ lợi ích quốc gia – dân tộc.</li>
+              <li><strong>Đại đoàn kết:</strong> củng cố sự đồng thuận và trách nhiệm của các thành phần trong xã hội.</li>
+            </ul>
+          </div>
+          
+          <!-- Liên hệ sinh viên -->
+          <div style="background:#f9f6f0;padding:16px 20px;border-radius:14px;border-left:6px solid #2c3e50;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+            <p style="font-weight:700;color:#2c3e50;margin:0 0 6px 0;font-size:1rem;">Liên hệ với sinh viên</p>
+            <ul style="font-size:0.95rem;color:#2c3e50;line-height:1.7;margin:0;padding-left:18px;">
+              <li><strong>Tự học:</strong> chủ động tích lũy kiến thức thay vì phụ thuộc hoàn toàn vào người khác.</li>
+              <li><strong>Làm chủ tri thức:</strong> rèn tư duy độc lập, khả năng phân tích và giải quyết vấn đề.</li>
+              <li><strong>Sáng tạo công nghệ:</strong> biến kiến thức thành sản phẩm, giải pháp và giá trị thực tế.</li>
+              <li><strong>Trách nhiệm:</strong> gắn năng lực cá nhân với lợi ích cộng đồng và đất nước.</li>
+              <li><strong>Hội nhập:</strong> học hỏi thế giới nhưng giữ bản lĩnh, đạo đức và trách nhiệm.</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:340px;">
+          <img src="slide22.png" alt="Giá trị hiện nay và liên hệ sinh viên" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 Giá trị hiện nay<br>và liên hệ sinh viên</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 23.1: Video liên hệ -->
+    <section class="slide" data-index="45">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">TỔNG KẾT</span>
+      <h2 class="slide-item" style="display:block;text-align:center;transition-delay:0.15s;">Xem video: Liên hệ Tư tưởng Hồ Chí Minh</h2>
+      <p class="slide-item" style="text-align:center;font-size:1rem;color:#555;margin:0 0 10px 0;transition-delay:0.2s;">
+        "Ánh sáng soi đường cho Dân tộc" | VTV24
+      </p>
+      
+      <!-- Bố cục trái - phải với video -->
+      <div style="display:flex;gap:30px;flex:1;margin-top:6px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.25s;flex:0.9;display:flex;flex-direction:column;justify-content:center;gap:12px;">
+          <div style="background:#f9f6f0;padding:18px 22px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+            <p style="font-size:1rem;color:#2c3e50;line-height:1.7;margin:0;">
+              <strong>📌 Nội dung video:</strong> Tư tưởng Hồ Chí Minh – ánh sáng soi đường cho cách mạng Việt Nam, từ độc lập dân tộc đến xây dựng và bảo vệ Tổ quốc.
+            </p>
+          </div>
+          
+          <!-- Các mạch tư tưởng xuyên suốt -->
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span style="background:#c0392b;color:#fff;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;">Giải phóng dân tộc</span>
+            <span style="background:#e74c3c;color:#fff;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;">Độc lập, tự do</span>
+            <span style="background:#2c3e50;color:#fff;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;">Nhân dân là chủ thể</span>
+            <span style="background:#2980b9;color:#fff;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;">Đại đoàn kết</span>
+            <span style="background:#27ae60;color:#fff;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;">Tự lực, tự cường</span>
+            <span style="background:#8e44ad;color:#fff;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;">Sức mạnh thời đại</span>
+          </div>
+          
+          <!-- Câu trích dẫn kết luận -->
+          <div style="background:#c0392b;color:#fff;padding:10px 16px;border-radius:10px;text-align:center;font-weight:600;font-size:0.95rem;font-style:italic;">
+            "Độc lập dân tộc phải gắn với quyền làm chủ và hạnh phúc của nhân dân."
+          </div>
+        </div>
+        
+        <!-- Cột phải: Video -->
+        <div class="slide-item" style="transition-delay:0.35s;flex:1.3;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:16/9;max-height:400px;">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            src="https://www.youtube.com/embed/LCtgo2X7-Os?si=Lhv3F4faMLU5DK8-" 
+            title="Ánh sáng soi đường cho Dân tộc | VTV24" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen 
+            style="width:100%;height:100%;border:none;">
+          </iframe>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 23.2: Tổng kết mạch tư tưởng -->
+    <section class="slide" data-index="22">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">TỔNG KẾT</span>
+      <h2 class="slide-item" style="display:block;text-align:center;transition-delay:0.15s;">Mạch tư tưởng xuyên suốt</h2>
+      <div class="slide-item" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0;transition-delay:0.2s;"><div style="background:#c0392b;color:#fff;padding:10px 20px;border-radius:30px;font-weight:600;">Giải phóng dân tộc</div><div style="background:#e74c3c;color:#fff;padding:10px 20px;border-radius:30px;font-weight:600;">Độc lập, tự do</div><div style="background:#2c3e50;color:#fff;padding:10px 20px;border-radius:30px;font-weight:600;">Nhân dân là chủ thể</div><div style="background:#2980b9;color:#fff;padding:10px 20px;border-radius:30px;font-weight:600;">Đại đoàn kết</div><div style="background:#27ae60;color:#fff;padding:10px 20px;border-radius:30px;font-weight:600;">Tự lực, tự cường</div><div style="background:#8e44ad;color:#fff;padding:10px 20px;border-radius:30px;font-weight:600;">Sức mạnh thời đại</div><div style="background:#d35400;color:#fff;padding:10px 20px;border-radius:30px;font-weight:600;">Xây dựng và bảo vệ đất nước</div></div>
+      <div class="quote slide-item" style="font-size:1.2rem;padding:14px 24px;transition-delay:0.3s;">Thông điệp xuyên suốt: độc lập dân tộc phải gắn với quyền làm chủ và hạnh phúc của nhân dân.</div>
+    </section>
+
+    <!-- SLIDE 24: Kết luận -->
+    <section class="slide" data-index="44">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">KHÉP LẠI BÀI THUYẾT TRÌNH</span>
+      <h2 class="slide-item" style="display:block;text-align:center;transition-delay:0.15s;">Kết luận</h2>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:25px;flex:1;margin-top:4px;align-items:center;">
+        
+        <!-- Cột trái: Ảnh 1 -->
+        <div class="slide-item" style="transition-delay:0.2s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:320px;">
+          <img src="slide24.1.png" alt="Kết luận 1" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1rem;color:#555;text-align:center;padding:20px;\'>📷 Kết luận 1</div>';">
+        </div>
+        
+        <!-- Cột giữa: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.25s;flex:1.4;display:flex;flex-direction:column;justify-content:center;">
+          
+          <!-- Trích dẫn -->
+          <div class="quote" style="font-size:1.2rem;padding:14px 20px;background:#f9f6f0;border-radius:12px;border-left:6px solid #c0392b;text-align:center;margin-bottom:10px;">
+            “Độc lập dân tộc phải đi cùng quyền làm chủ và hạnh phúc của nhân dân.”
+          </div>
+          
+          <!-- Nội dung -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="background:#f9f6f0;padding:12px 16px;border-radius:10px;border-left:4px solid #c0392b;">
+              <ul style="font-size:0.9rem;color:#2c3e50;line-height:1.6;margin:0;padding-left:16px;">
+                <li><strong>Cơ sở:</strong> từ thực tiễn mất nước và hành trình tìm đường cứu nước</li>
+                <li><strong>Nội dung:</strong> độc lập, tự do, hạnh phúc và định hướng xã hội mới</li>
+              </ul>
+            </div>
+            <div style="background:#f9f6f0;padding:12px 16px;border-radius:10px;border-left:4px solid #c0392b;">
+              <ul style="font-size:0.9rem;color:#2c3e50;line-height:1.6;margin:0;padding-left:16px;">
+                <li><strong>Con đường:</strong> cách mạng vô sản, do nhân dân làm chủ</li>
+                <li><strong>Phương pháp:</strong> chủ động, sáng tạo, tự lực, đoàn kết</li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Footer -->
+          <div class="footer-note" style="margin-top:10px;background:#eae2d4;padding:10px 16px;border-radius:10px;text-align:center;border:2px solid #c0392b;">
+            <span style="font-weight:600;font-size:0.9rem;">💬 Thảo luận: "Yếu tố nào có ý nghĩa rõ nhất với sinh viên hiện nay?"</span>
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh 2 -->
+        <div class="slide-item" style="transition-delay:0.35s;flex:1.1;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;aspect-ratio:4/3;max-height:320px;">
+          <img src="slide24.2.png" alt="Kết luận 2" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1rem;color:#555;text-align:center;padding:20px;\'>📷 Kết luận 2</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- SLIDE 25: Ôn tập nhanh -->
+    <section class="slide" data-index="24">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">ÔN TẬP</span>
+      <h2 class="slide-item" style="transition-delay:0.15s;">Những điểm chính</h2>
+      <ul class="slide-item" style="transition-delay:0.2s;"><li>Tư tưởng Hồ Chí Minh về dân tộc bắt nguồn từ thực tiễn đấu tranh giải phóng.</li><li>Độc lập gắn với tự do, hạnh phúc và con đường xã hội chủ nghĩa.</li><li>Cách mạng là sự nghiệp của toàn dân, lấy đại đoàn kết làm sức mạnh.</li><li>Phương pháp chủ động, linh hoạt, tự lực và kết hợp sức mạnh thời đại.</li></ul>
+    </section>
+
+    <!-- SLIDE 26: Trích dẫn và cảm ơn -->
+    <section class="slide" data-index="43">
+      <span class="section-tag slide-item" style="transition-delay:0.1s;">KẾT THÚC</span>
+      
+      <!-- Bố cục trái - phải -->
+      <div style="display:flex;gap:25px;flex:1;margin-top:4px;align-items:center;">
+        
+        <!-- Cột trái: Nội dung chữ -->
+        <div class="slide-item" style="transition-delay:0.15s;flex:0.9;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+          <h2 style="font-size:2.2rem;color:#c0392b;margin:0 0 16px 0;line-height:1.3;font-weight:700;">
+            “KHÔNG CÓ GÌ QUÝ HƠN<br>ĐỘC LẬP, TỰ DO”
+          </h2>
+          <div style="background:#f9f6f0;padding:16px 28px;border-radius:14px;border-left:6px solid #c0392b;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+            <p style="font-size:1.2rem;color:#2c3e50;margin:0;font-weight:500;">
+              Chân thành cảm ơn<br>thầy cô và các bạn!
+            </p>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+            <span style="background:#eae2d4;padding:6px 18px;border-radius:20px;font-size:0.85rem;color:#2c3e50;font-weight:600;">Nhóm 1</span>
+            <span style="background:#eae2d4;padding:6px 18px;border-radius:20px;font-size:0.85rem;color:#2c3e50;font-weight:600;">Tư tưởng Hồ Chí Minh</span>
+          </div>
+        </div>
+        
+        <!-- Cột phải: Ảnh minh họa -->
+        <div class="slide-item" style="transition-delay:0.3s;flex:1.3;border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,0.2);border:3px solid #c0392b;min-height:400px;max-height:500px;">
+          <img src="slide26.png" alt="Không có gì quý hơn độc lập, tự do" style="width:100%;height:100%;object-fit:contain;display:block;background:#f5f0e8;" onerror="this.style.display='none';this.parentElement.style.background='#d9cdbb';this.parentElement.innerHTML='<div style=\'display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.2rem;color:#555;text-align:center;padding:20px;\'>📷 KHÔNG CÓ GÌ QUÝ HƠN<br>ĐỘC LẬP, TỰ DO</div>';">
+        </div>
+        
+      </div>
+    </section>
+
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-arrow prev" id="prevSlide" aria-label="Slide trước">‹</button>
+  <button class="nav-arrow next" id="nextSlide" aria-label="Slide sau">›</button>
+
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;
+      let currentSlideIndex = 0;
+      let currentItemIndex = 0; // vị trí item đang hiển thị trong slide hiện tại
+      let isAnimating = false;
+      let isPresentationMode = false;
+      let triggerTimeout;
+
+      const deck = document.getElementById('deck');
+      const presentationBar = document.getElementById('presentationBar');
+      const slideCounter = document.getElementById('slideCounter');
+      const btnPresent = document.getElementById('btnPresent');
+      const btnFullscreen = document.getElementById('btnFullscreen');
+      const presentationTrigger = document.getElementById('presentationTrigger');
+      const prevBtn = document.getElementById('prevSlide');
+      const nextBtn = document.getElementById('nextSlide');
+      const navDots = document.getElementById('navDots');
+
+      // Tạo dots
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+        dot.dataset.index = i;
+        dot.addEventListener('click', () => goToSlide(i));
+        navDots.appendChild(dot);
+      }
+      const dots = navDots.querySelectorAll('.nav-dot');
+
+      // Lấy tất cả slide-item trong một slide
+      function getSlideItems(slide) {
+        return slide.querySelectorAll('.slide-item');
+      }
+
+      // Bật/tắt active cho các phần tử trong slide
+      function activateSlideItems(slide, active) {
+        const items = getSlideItems(slide);
+        items.forEach(item => {
+          if (active) item.classList.add('active');
+          else item.classList.remove('active');
+        });
+      }
+
+      // Hiển thị lần lượt các item: active từ 0 đến index
+      function showItemsUpTo(slide, index) {
+        const items = getSlideItems(slide);
+        items.forEach((item, i) => {
+          if (i <= index) item.classList.add('active');
+          else item.classList.remove('active');
+        });
+      }
+
+      // Đếm số item trong slide
+      function countItems(slide) {
+        return getSlideItems(slide).length;
+      }
+
+      // Cập nhật UI: slide và dots
+      function updateUI() {
+        slides.forEach((slide, index) => {
+          slide.classList.toggle('active', index === currentSlideIndex);
+        });
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentSlideIndex);
+        });
+        slideCounter.textContent = `${currentSlideIndex + 1} / ${totalSlides}`;
+      }
+
+      // Chuyển đến một slide, reset item index về 0
+      function goToSlide(index, direction) {
+        if (isAnimating) return;
+        if (index === currentSlideIndex) return;
+        if (index < 0 || index >= totalSlides) return;
+
+        isAnimating = true;
+        const oldIndex = currentSlideIndex;
+        const newIndex = index;
+        const dir = direction || (newIndex > oldIndex ? 'right' : 'left');
+
+        const oldSlide = slides[oldIndex];
+        const newSlide = slides[newIndex];
+
+        // Reset item index của slide mới
+        currentItemIndex = 0;
+
+        // Ẩn hết item ở slide cũ
+        activateSlideItems(oldSlide, false);
+
+        // Reset và chuẩn bị slide mới
+        newSlide.className = 'slide';
+        newSlide.classList.add('enter-from-' + dir);
+        void newSlide.offsetWidth;
+
+        // Thoát slide cũ
+        oldSlide.classList.remove('active');
+        oldSlide.classList.add('exit-' + (dir === 'right' ? 'left' : 'right'));
+
+        // Vào slide mới
+        newSlide.classList.add('active');
+        currentSlideIndex = newIndex;
+        updateUI();
+
+        // Hiển thị item đầu tiên của slide mới
+        setTimeout(() => {
+          showItemsUpTo(newSlide, 0);
+        }, 150);
+
+        setTimeout(() => {
+          oldSlide.className = 'slide';
+          newSlide.className = 'slide';
+          newSlide.classList.add('active');
+          isAnimating = false;
+        }, 700);
+      }
+
+      // Hàm next: hiển thị item tiếp theo, nếu hết item thì chuyển slide
+      function nextStep() {
+        if (isAnimating) return;
+
+        const currentSlide = slides[currentSlideIndex];
+        const items = getSlideItems(currentSlide);
+        const totalItems = items.length;
+
+        // Nếu còn item chưa hiển thị
+        if (currentItemIndex < totalItems - 1) {
+          currentItemIndex++;
+          showItemsUpTo(currentSlide, currentItemIndex);
+          return;
+        }
+
+        // Nếu đã hiển thị hết item, chuyển sang slide tiếp theo
+        if (currentSlideIndex < totalSlides - 1) {
+          goToSlide(currentSlideIndex + 1, 'right');
+        }
+      }
+
+      // Hàm prev: quay lại item trước, nếu đang ở item đầu thì chuyển slide trước
+      function prevStep() {
+        if (isAnimating) return;
+
+        const currentSlide = slides[currentSlideIndex];
+
+        // Nếu đang ở item > 0, quay lại item trước
+        if (currentItemIndex > 0) {
+          currentItemIndex--;
+          showItemsUpTo(currentSlide, currentItemIndex);
+          return;
+        }
+
+        // Nếu đang ở item đầu, chuyển về slide trước (hiển thị full slide trước)
+        if (currentSlideIndex > 0) {
+          const prevIndex = currentSlideIndex - 1;
+          const prevSlide = slides[prevIndex];
+          const prevItems = getSlideItems(prevSlide);
+          // Khi quay lại slide trước, hiển thị tất cả item của slide đó
+          goToSlide(prevIndex, 'left');
+          // Sau khi chuyển slide, active tất cả item
+          setTimeout(() => {
+            const newSlide = slides[currentSlideIndex];
+            const items = getSlideItems(newSlide);
+            items.forEach(item => item.classList.add('active'));
+            currentItemIndex = items.length - 1;
+          }, 200);
+        }
+      }
+
+      function togglePresentation() {
+        isPresentationMode = !isPresentationMode;
+        document.body.classList.toggle('presentation-mode', isPresentationMode);
+
+        if (isPresentationMode) {
+          document.body.style.overflow = 'hidden';
+          slides.forEach((slide, index) => {
+            slide.className = 'slide';
+            if (index === currentSlideIndex) {
+              slide.classList.add('active');
+              showItemsUpTo(slide, currentItemIndex);
+            } else {
+              activateSlideItems(slide, false);
+            }
+          });
+
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          }
+
+          document.addEventListener('keydown', handleKeydown);
+          presentationBar.classList.remove('show');
+
+          presentationTrigger.addEventListener('mouseenter', showToolbar);
+          presentationTrigger.addEventListener('mouseleave', hideToolbarDelayed);
+
+          presentationBar.addEventListener('mouseenter', function() {
+            clearTimeout(triggerTimeout);
+            presentationBar.classList.add('show');
+          });
+
+          presentationBar.addEventListener('mouseleave', function(e) {
+            const rect = presentationTrigger.getBoundingClientRect();
+            if (e.clientY < rect.top) {
+              hideToolbarDelayed();
+            }
+          });
+
+        } else {
+          document.body.style.overflow = '';
+          slides.forEach(slide => {
+            slide.className = 'slide';
+            activateSlideItems(slide, false);
+          });
+          slides[currentSlideIndex].classList.add('active');
+          showItemsUpTo(slides[currentSlideIndex], currentItemIndex);
+
+          document.removeEventListener('keydown', handleKeydown);
+          presentationTrigger.removeEventListener('mouseenter', showToolbar);
+          presentationTrigger.removeEventListener('mouseleave', hideToolbarDelayed);
+
+          presentationBar.classList.remove('show');
+          clearTimeout(triggerTimeout);
+
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          }
+
+          slides[currentSlideIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        btnPresent.innerHTML = isPresentationMode
+          ? '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg><span>Thoát</span>'
+          : '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;"><path d="M8 5v14l11-7z"/></svg><span>Thuyết trình</span>';
+      }
+
+      function showToolbar() {
+        clearTimeout(triggerTimeout);
+        presentationBar.classList.add('show');
+      }
+
+      function hideToolbarDelayed() {
+        triggerTimeout = setTimeout(() => {
+          presentationBar.classList.remove('show');
+        }, 1500);
+      }
+
+      function handleKeydown(e) {
+        if (!isPresentationMode) return;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+          e.preventDefault();
+          nextStep();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          prevStep();
+        } else if (e.key === 'Escape') {
+          togglePresentation();
+        } else if (e.key === 'f' || e.key === 'F') {
+          e.preventDefault();
+          toggleFullscreen();
+        }
+      }
+
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen?.() || document.documentElement.webkitRequestFullscreen?.();
+        } else {
+          document.exitFullscreen?.() || document.webkitExitFullscreen?.();
+        }
+      }
+
+      btnPresent.addEventListener('click', togglePresentation);
+      btnFullscreen.addEventListener('click', toggleFullscreen);
+      prevBtn.addEventListener('click', prevStep);
+      nextBtn.addEventListener('click', nextStep);
+
+      // Click trên deck (chế độ thuyết trình)
+      deck.addEventListener('click', function(e) {
+        if (!isPresentationMode) return;
+        if (e.target.closest('button') || e.target.closest('.presentation-bar') || e.target.closest('.nav-dot')) return;
+        const rect = deck.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        if (clickX > rect.width * 0.6) {
+          nextStep();
+        } else if (clickX < rect.width * 0.4) {
+          prevStep();
+        }
+      });
+
+      // Touch
+      let touchStartX = 0;
+      deck.addEventListener('touchstart', function(e) {
+        if (!isPresentationMode) return;
+        touchStartX = e.changedTouches[0].screenX;
+      });
+      deck.addEventListener('touchend', function(e) {
+        if (!isPresentationMode) return;
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) nextStep();
+          else prevStep();
+        }
+      });
+
+      // Khởi tạo: slide 0, item 0
+      slides.forEach((slide, index) => {
+        slide.className = 'slide';
+        if (index === 0) {
+          slide.classList.add('active');
+          showItemsUpTo(slide, 0);
+        }
+      });
+      updateUI();
+      currentItemIndex = 0;
+
+      console.log('✅ Slide trình chiếu với hiệu ứng từng phần tử (lần lượt)');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+/* ===== style.css – Giao diện slide chính ===== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: #1e1e1e;
+  font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.slide-container {
+  max-width: 1280px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* ===== MỖI SLIDE ===== */
+.slide {
+  background: #fcf9f2;
+  background-image: radial-gradient(circle at 10% 20%, rgba(235, 225, 210, 0.25) 0%, transparent 50%);
+  border-radius: 48px 16px 48px 16px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.8);
+  padding: 36px 44px;
+  border-left: 8px solid #c0392b;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(192, 57, 43, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.slide-number {
+  display: inline-block;
+  background: #c0392b;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 4px 18px;
+  border-radius: 40px;
+  letter-spacing: 0.8px;
+  margin-bottom: 14px;
+  align-self: flex-start;
+}
+
+h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1e2a3a;
+  margin-bottom: 12px;
+  letter-spacing: -0.4px;
+  border-bottom: 4px solid #c0392b;
+  padding-bottom: 10px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 16px 0 12px 0;
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #a93226;
+  margin: 14px 0 8px 0;
+}
+
+p, li {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #2d2d2d;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 12px 0;
+}
+
+li {
+  padding: 6px 0 6px 32px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23c0392b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') left center no-repeat;
+  background-size: 20px;
+}
+
+/* ===== GRID LAYOUTS ===== */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin: 16px 0;
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 22px;
+  margin: 16px 0;
+}
+
+.grid-4col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 18px;
+  margin: 16px 0;
+}
+
+/* ===== CÁC THÀNH PHẦN TRANG TRÍ ===== */
+.card-inset {
+  background: rgba(255, 255, 245, 0.6);
+  backdrop-filter: blur(2px);
+  padding: 18px 20px;
+  border-radius: 28px;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.02), 0 8px 20px -8px rgba(0,0,0,0.12);
+  border: 1px solid rgba(210, 190, 170, 0.3);
+}
+
+.highlight-box {
+  background: #eae2d4;
+  padding: 16px 24px;
+  border-radius: 32px 8px 32px 8px;
+  border-left: 8px solid #b03a2e;
+  margin: 16px 0;
+  font-size: 1.05rem;
+}
+
+.quote {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #1e2a3a;
+  background: #f0ebe1;
+  padding: 18px 32px;
+  border-radius: 60px 12px 60px 12px;
+  margin: 16px 0;
+  border: 1px solid #d6cbbc;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.badge {
+  background: #c0392b;
+  color: #fff;
+  padding: 6px 18px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+/* ===== HÌNH ẢNH GIỮ CHỖ ===== */
+.image-placeholder {
+  background: #d9cdbb;
+  background-image: linear-gradient(145deg, #d9cdbb 0%, #c7b8a2 100%);
+  border-radius: 24px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #3f3a32;
+  border: 1.5px dashed #8b7a66;
+  font-size: 0.95rem;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  margin: 10px 0;
+}
+
+.image-placeholder i {
+  font-style: normal;
+  background: rgba(255, 255, 240, 0.3);
+  padding: 6px 20px;
+  border-radius: 40px;
+}
+
+/* ===== CHÂN SLIDE ===== */
+.footer-note {
+  margin-top: 20px;
+  border-top: 1px solid #d0c4b4;
+  padding-top: 18px;
+  font-size: 1rem;
+  color: #5b4f40;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-like {
+  background: transparent;
+  border: 1.5px solid #b03a2e;
+  color: #b03a2e;
+  padding: 6px 22px;
+  border-radius: 40px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: default;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .slide {
+    aspect-ratio: auto;
+    min-height: 480px;
+    padding: 28px 24px;
+  }
+  .grid-2col, .grid-3col, .grid-4col {
+    grid-template-columns: 1fr 1fr;
+  }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.3rem; }
+  .quote { font-size: 1.2rem; }
+}
+
+@media (max-width: 600px) {
+  .slide {
+    padding: 20px 16px;
+    min-height: 400px;
+    border-radius: 28px 8px 28px 8px;
+  }
+  .grid-2col, .grid-3col, .grid-4col {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  h2 { font-size: 1.6rem; }
+  h3 { font-size: 1.1rem; }
+  p, li { font-size: 0.95rem; }
+  .quote { font-size: 1rem; padding: 14px 18px; }
+  .slide-number { font-size: 0.7rem; }
+}
+
+/* ===== IN PDF NGANG ===== */
+@media print {
+  body {
+    background: #fff;
+    padding: 0;
+    margin: 0;
+  }
+  .slide-container {
+    max-width: 100%;
+    gap: 0;
+  }
+  .slide {
+    aspect-ratio: 16 / 9 !important;
+    page-break-after: always;
+    border-radius: 0;
+    box-shadow: none;
+    border-left: 4px solid #c0392b;
+    padding: 40px 48px;
+    background: #fcf9f2;
+    min-height: auto;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+  }
+  .slide::after {
+    display: none;
+  }
+  .image-placeholder {
+    border: 1px solid #aaa;
+    background: #eee;
+  }
+  .highlight-box, .quote {
+    background: #f3ede6;
+    border-color: #b03a2e;
+  }
+  .footer-note {
+    border-top-color: #bbb;
+  }
+}
